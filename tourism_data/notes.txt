@@ -1,0 +1,75 @@
+cat /emr/instance-controller/log/bootstrap-actions/master.log
+
+cat /emr/instance-controller/log/bootstrap-actions/1
+
+# install location
+2018-03-18 22:45:04 (66.5 MB/s) - ‘/home/hadoop/anaconda.sh’ saved [478051940/478051940]
+
+
+--py-files
+
+
+LOCAL_FOLDER='/Users/ryanzotti/Documents/repos/Self_Driving_RC_Car/data'
+S3_FOLDER='s3://self-driving-car/data'
+
+
+aws s3 sync ${S3_FOLDER} ${LOCAL_FOLDER}
+
+
+LOCAL_FOLDER=/home/hadoop/predata-tourism/tourism_data
+S3_FOLDER='s3://ryanzotti-data-science/predata-tourism/tourism_data'
+
+aws s3 sync ${S3_FOLDER} ${LOCAL_FOLDER}
+
+
+nmap -p 5432 predata2.ccucwgoi792a.us-east-1.rds.amazonaws.com
+
+ping 54.92.211.61
+
+
+vpc-7083b416
+
+
+EMR master subnet
+subnet-1c0ccd54
+
+# Install Postgres on remote server (Ubuntu)
+sudo apt-get update
+sudo apt-get install -y postgresql postgresql-contrib
+
+sudo service postgresql initdb
+sudo service postgresql start
+
+sudo su postgres
+psql -U postgres
+
+ec2-54-92-211-61.compute-1.amazonaws.com
+
+# Person with same state closed problem as me: https://serverfault.com/questions/789919/postgresql-port-closed-for-remote-access
+# issue related to ip tables thing. Sounds like internet gateway possibly?
+# Person with exact same postgres issue on EC2 instance: https://stackoverflow.com/questions/17838613/open-port-in-ubuntu
+nmap -p 5432 54.92.211.61
+
+psql -h 54.92.211.61 -p 5432 -U postgres -W postgres predata_tourism
+
+psql -h 54.92.211.61 -p 5432 -U postgres -W postgres
+psql -h localhost -p 5432 -U postgres -W postgres
+
+
+9.5.12
+/etc/postgresql/9.5/main/postgresql.conf
+
+sudo su postgres
+psql -U postgres
+ALTER USER postgres WITH PASSWORD 'postgres';
+
+sudo su 
+echo "listen_addresses = '*'"" >> /etc/postgresql/9.5/main/postgresql.conf
+
+echo 'host    all             all             192.168.1.0/24          md5' >> /etc/postgresql/9.5/main/pg_hba.conf
+
+
+
+
+
+

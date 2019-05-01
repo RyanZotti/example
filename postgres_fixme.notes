@@ -1,0 +1,206 @@
+pg_dump -C -h localhost -U localuser dbname | psql -h remotehost -U remoteuser dbname
+
+
+pg_dump -C -h localhost -U localuser dbname | psql -h remotehost -U remoteuser dbname
+
+# Run from your laptop (or wheverever you want to send the backup)
+pg_dump -C -h '34.234.97.29' -U postgres predata_tourism | psql -h localhost -U postgres aws_predata
+
+cp -R /usr/local/var/postgres.9.4.backup/ /usr/local/var/postgres/
+
+# Back up old database
+cp -R /usr/local/var/postgres/ /usr/local/var/postgres.9.4.backup/
+
+# The @ tells brew to install specific version
+brew install postgresql@9.5
+brew services start postgresql@9.5
+
+NEW_PG="/usr/local/Cellar/postgresql@9.5/9.5.12/bin"
+
+# Create new data dir with new postgres binary
+${NEW_PG}/initdb /usr/local/var/postgres9.5 -E utf8
+
+${NEW_PG}/pg_upgrade \
+  -d /usr/local/var/postgres \
+  -D  /usr/local/var/postgres9.5 \
+  -b /usr/local/Cellar/postgresql/9.4.4/bin/ \
+  -B ${NEW_PG}/ \
+  -v
+
+# Now make 9.5 the current version
+mv /usr/local/var/postgres9.5 /usr/local/var/postgres
+
+
+pg_upgrade -b /usr/local/Cellar/postgresql@9.6/9.6.5/bin -B /usr/local/Cellar/postgresql/10.0/bin -d /usr/local/var/postgres96 -D /usr/local/var/postgres
+
+
+/usr/local/var/postgresql@9.5
+
+# Query version of Postgres
+SELECT version();
+
+# Query database's file path 
+SHOW data_directory;
+
+
+### 
+
+old version of Postgres
+/Library/PostgreSQL/9.4
+
+#####
+
+
+
+# Back up old database
+cp -R /usr/local/var/postgres/ /usr/local/var/postgres.9.5.backup/
+
+# The @ tells brew to install specific version
+brew upgrade postgresql
+brew services start postgresql@10
+
+NEW_PG="/usr/local/Cellar/postgresql/10.3/bin"
+OLD_PG="/Library/PostgreSQL/9.4/bin"
+
+NEW_PG_DATA="/usr/local/var/postgres10.3"
+OLD_PG_DATA="/Library/PostgreSQL/9.4/data"
+
+# Create new data dir with new postgres binary
+${NEW_PG}/initdb ${NEW_PG_DATA} -E utf8
+
+# Fixes an issue
+kill -INT `head -1 ${OLD_PG_DATA}/postmaster.pid`
+
+# Make everything Postgres readable
+chmod -R 700 /Library/PostgreSQL/9.4/data
+chmod -R 700 /usr/local/var/postgres10.3
+chown -R ryanzotti /Library/PostgreSQL/9.4/data
+chown -R ryanzotti /usr/local/var/postgres10.3
+
+NEW_PG="/usr/local/Cellar/postgresql/10.3/bin"
+OLD_PG="/Library/PostgreSQL/9.4/bin"
+
+NEW_PG_DATA="/usr/local/var/postgres10.3"
+OLD_PG_DATA="/Library/PostgreSQL/9.4/data"
+
+${NEW_PG}/pg_upgrade \
+  -d ${OLD_PG_DATA} \
+  -D ${NEW_PG_DATA} \
+  -b ${OLD_PG}/ \
+  -B ${NEW_PG}/ \
+  -v
+
+
+pg_ctl -D /usr/local/var/postgres start
+
+# Now make 9.5 the current version
+mv /usr/local/var/postgres9.5 /usr/local/var/postgres
+
+OLD_PG="/Library/PostgreSQL/9.4/bin"
+$OLD_PG/pg_ctl -D /usr/local/var/postgres start
+
+
+pg_ctl -D /usr/local/var/postgres stop
+
+
+sudo /etc/init.d/postgresql stop
+
+
+but could not open file "/Library/PostgreSQL/9.4/data/global/pg_control": Permission denied
+
+chmod -R 700 /Library/PostgreSQL/9.4/data
+chmod -R 700 /usr/local/var/postgres10.3
+chown -R postgres /Library/PostgreSQL/9.4/data
+chown -R postgres /usr/local/var/postgres10.3
+sudo su postgres
+
+
+# Postgres assumes DB of user: https://stackoverflow.com/questions/17633422/psql-fatal-database-user-does-not-exist
+sudo su postgres
+/Library/PostgreSQL/9.4/bin/psql
+/Library/PostgreSQL/9.4/bin/psql
+
+sudo -u user psql user
+
+ps aux | grep postgres
+
+
+# Start Postgres with a particular data directory
+/Library/PostgreSQL/9.4/bin/pg_ctl -D /Library/PostgreSQL/9.4/data start
+
+cp -R /Library/PostgreSQL/9.4/data /usr/local/var/postgres.9.4.5
+
+sudo chmod -R 700 /Library/PostgreSQL/9.4/data
+sudo chmod -R 777 /usr/local/var/postgres10.3
+sudo chown -R ryanzotti /Library/PostgreSQL/9.4/data
+
+sudo su postgres
+
+NEW_PG="/usr/local/Cellar/postgresql/10.3/bin"
+OLD_PG="/Library/PostgreSQL/9.4/bin"
+
+NEW_PG_DATA="/usr/local/var/postgres10.3"
+OLD_PG_DATA="/Library/PostgreSQL/9.4/data"
+
+${NEW_PG}/pg_upgrade \
+  -d ${OLD_PG_DATA} \
+  -D ${NEW_PG_DATA} \
+  -b ${OLD_PG}/ \
+  -B ${NEW_PG}/ \
+  -v
+
+python store_data.py --host 34.234.97.29
+
+connection to database failed: fe_sendauth: no password supplied
+could not connect to source postmaster started with the command:
+"/Library/PostgreSQL/9.4/bin/pg_ctl" -w -l "pg_upgrade_server.log" -D "/Library/PostgreSQL/9.4/data" -o "-p 50432 -b  -c listen_addresses='' -c unix_socket_permissions=0700 -c unix_socket_directories='/Users/ryanzotti/Documents/RZ_Programs/Postgres'" start
+
+
+mv /Library/PostgreSQL/9.4/data/postmaster.pid /Library/PostgreSQL/9.4/data/postmaster.pid-2
+
+/usr/local/Cellar/postgresql/10.3/bin/psql
+
+/usr/local/Cellar/postgresql/10.3/bin/psql
+
+# The server must be started by the user that owns the data directory.
+sudo chown -R postgres /usr/local/var/postgres10.3
+sudo chmod -R 700 /usr/local/var/postgres10.3
+rm /tmp/.s.PGSQL.5432.lock
+sudo su postgres
+PATH=:/usr/local/Cellar/$PATH
+/usr/local/Cellar/postgresql/10.3/bin/pg_ctl -D /usr/local/var/postgres10.3 start
+
+sudo chmod 777 /usr/local
+
+sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'postgres';"
+
+psql -U postgres -h $HOST -c "CREATE DATABASE ${DB};"
+
+# goal: set password for postgres 10.3 so that I don't fail startup with no password set
+
+
+# create new user
+sudo dscl . -create /Users/postgres
+
+
+spark-submit --py-files /home/hadoop/predata-tourism/functions.py,/home/hadoop/predata-tourism/data_config.py spark_train_models.py
+
+
+yarn logs -applicationId application_1432041223735_0001 > appID_1432041223735_0001.log
+
+yarn logs -applicationId application_1522025572332_0008 > application_1522025572332_0008.log
+
+
+libmkl_avx2.so or libmkl_def.so
+
+
+
+# Fixes "Intel MKL FATAL ERROR: Cannot load libmkl_avx2.so or libmkl_def.so" error
+conda update -y numpy
+
+python train_models.py
+
+
+spark-submit --py-files /home/hadoop/predata-tourism/functions.py,/home/hadoop/predata-tourism/data_config.py \
+    --total-executor-cores 30 \
+    spark_train_models.py 
